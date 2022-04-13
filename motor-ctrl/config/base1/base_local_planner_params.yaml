@@ -1,0 +1,46 @@
+TrajectoryPlannerROS:
+  # Robot Configuration Parameters
+  acc_lim_x: 1.25                 # default 2.5  机器人在x方向的加速度极限
+  acc_lim_y: 0.0                  # default 2.5  机器人在y方向的加速度极限
+  acc_lim_th: 1                   # default 3.2  机器人的角加速度极限
+  
+  max_trans_vel:  1.5  #default 0.5              # default 0.55 机器人最大平移速度的绝对值,单位m/s
+  min_trans_vel: 0.5             # default 0.1  机器人最小平移速度的绝对值,单位m/s
+  
+  max_vel_x: 0.5                  # default 0.55 机器人在x方向的最大速度,单位m/s
+  min_vel_x: -0.5                # default 0.0  机器人在x方向的最小速度，若设置为负数，则机器人向后移动
+  max_vel_y: 0.0                  # default 0.1  机器人在y方向的最大速度
+  min_vel_y: 0.0                  # default -0.1 机器人在y方向的最小速度
+  
+  max_rot_vel: 2.0  #0.5                # default 1.0  机器人的最大角速度的绝对值
+  min_rot_vel: 0.2 #-0.5               # default 0.4  机器人的最小角速度的绝对值
+  escape_vel: -0.4                #逃离期间的备份速度（米/秒），他必须为负数，若为正则会向前移动
+  min_in_place_vel_theta: 0.2  #以弧度/每秒为单位执行原位旋转允许的最小速度
+  # Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.1         # default 0.05  达到目标时，机器人在偏航/旋转中的弧度容忍误差。
+  xy_goal_tolerance: 0.1         # default 0.10  达到目标时，机器人在x和y距离内的容忍误差。
+  latch_xy_goal_tolerance: false  # default false 如果设置为true,机器人到达容错距离内,就会原地旋转,即使转动是会跑出容错距离外.
+
+  # Forward Simulation Parameters
+  sim_time: 1.7 #3.0                   # default 1.7    前向模拟轨迹的时间，单位:s
+  sim_granularity: 0.025            # default 0.025  给定轨迹上的点之间的间隔尺寸，单位:m
+  vx_samples: 20                  # default 3      x方向速度的样本数
+  vy_samples: 0                   # default 10     y方向速度的样本数
+  vth_samples: 40                 # default 20     角速度的样本数
+
+  # Trajectory Scoring Parameters
+  path_distance_bias: 34.0        # default 32.0   定义控制器与给定路径接近程度
+  goal_distance_bias: 15.0        # default 24.0   定义控制器与局部目标点的接近程度，并控制速度
+  occdist_scale: 0.05             # default 0.01   定义控制器躲避障碍物的程度
+  forward_point_distance: 0.325   # default 0.325
+  stop_time_buffer: 0.7          # default 0.2    为防止碰撞，机器人必须提前停止的时间长度(单位:s)。
+  scaling_speed: 0.25             # default 0.25   启动机器人底座的速度
+  max_scaling_factor: 0.2         # default 0.2    最大缩放参数
+  publish_cost_grid: false        # default false	是否发布规划器在规划路径时的代价网格.如果设置为true,那么就会在~/cost_cloud话题上发布sensor_msgs/PointCloud2类型消息.
+
+  # Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05    # default 0.05   机器人运动多远距离才会重置振荡标记
+  dwa: false 
+  # Global Plan Parameters
+  prune_plan: false               # default true   机器人前进时是否清除身后1m外的轨迹
+  meter_scoring: true

@@ -1,0 +1,183 @@
+controllers:
+  - name: dwa
+    type: dwa_local_planner/DWAPlannerROS
+  - name: PathTrackingPID
+    type: path_tracking_pid/TrackingPidLocalPlanner
+  - name: teb
+    type: teb_local_planner/TebLocalPlannerROS
+
+PathTrackingPID:
+  holonomic_robot: false
+  track_base_link: true
+  estimate_pose_angle: false
+  base_link_frame: base_link
+  Kd_ang: 0.3
+  Kd_lat: 0.3
+  Ki_ang: 0.0
+  Ki_lat: 0.0
+  Kp_ang: 1.0
+  Kp_lat: 1.0
+  l: 1.0
+  feedback_ang: false
+  feedback_lat: true
+  feedforward_ang: false
+  feedforward_lat: true
+  controller_debug_enabled: true
+  target_end_x_vel: 0.0
+  target_x_acc: 2.0
+  target_x_decc: 2.0
+  target_x_vel: 2.0
+  abs_minimum_x_vel: 0.0
+  max_error_x_vel: 1.0
+  max_yaw_vel: 2.0
+  max_yaw_acc: 2.0
+  min_turning_radius: 0.0
+
+# MPC
+  use_mpc: false
+  mpc_max_error_lat: 0.5
+  mpc_max_fwd_iter: 200
+  mpc_max_vel_optimization_iterations: 5
+  mpc_min_x_vel: 0.5
+  mpc_simulation_sample_time: 0.05
+
+# anti-collision:
+  anti_collision: true
+  obstacle_speed_reduction: true
+  collision_look_ahead_resolution: 1.0  # [m]
+
+dwa:
+  max_vel_x: 0.8 #0.5  #x方向最大线速度绝对值，单位:米/秒
+  min_vel_x: -0.05 #0.0  #x方向最小线速度绝对值，负数代表可后退，单位:米/秒
+  max_vel_y: 0.0  # #y方向最大线速度绝对值，单位:米/秒。差分驱动机器人为0    
+  min_vel_y: 0.0  # #y方向最小线速度绝对值，单位:米/秒。差分驱动机器人为0   
+  max_vel_trans: 1.0 #0.8 #1.0 #0.8 #0.5 #   #机器人最大平移速度的绝对值，单位为 m/s
+  min_vel_trans: 0.01 #0.1  # #机器人最小平移速度的绝对值，单位为 m/s 不可为零  
+  trans_stopped_vel: 0.05 #0.1 #机器人被认属于“停止”状态时的平移速度。如果机器人的速度低于该值，则认为机器人已停止。单位为 m/s
+  max_vel_theta:  0.8 #0.9 # 0.7  #机器人的最大旋转角速度的绝对值，单位为 rad/s 
+  min_vel_theta: 0.02 #0.05 #0.3  # 器人的最小旋转角速度的绝对值，单位为 rad/s
+
+  theta_stopped_vel : 0.01 #0.2 #0.4 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s  
+  acc_lim_x:  1.0 #1.0  #2.0 #1.5 #0.8 #1.2  # 机器人在x方向的极限加速度，单位为 meters/sec^2
+  acc_lim_theta: 1.0 #3.0 #1.2 #9 #10  #7.0 #3.5 #3 #4 #3.2 #2.5 #1.5 #3.0 #机器人的极限旋转加速度，单位为 rad/sec^2  # 7
+  acc_lim_y: 0.0      #  机器人在y方向的极限加速度，对于差分机器人来说当然是0
+ # Goal Tolerance Parameters目标距离公差参数
+  meter_scoring: true         # 按距离来评定
+  yaw_goal_tolerance: 0.15 #0.2 #0.08 #0.1 #0.15 #到达目标点时，控制器在偏航/旋转时的弧度容差(tolerance)。即：到达目标点时偏行角允许的误差，单位弧度
+  xy_goal_tolerance: 0.1 #0.2 #0.1 # 到到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差
+  latch_xy_goal_tolerance: true #设置为true时表示：如果到达容错距离内,机器人就会原地旋转；即使转动是会跑出容错距离外。
+
+# Forward Simulation Parameters前向模拟参数
+  sim_time: 1.0 #1.2 #1.5      # 前向模拟轨迹的时间，单位为s(seconds) 
+  sim_granularity: 0.025
+  vx_samples: 10 #20       # x方向速度空间的采样点数
+  vy_samples: 0.0       # y方向速度空间采样点数.。差分驱动机器人y方向永远只有1个值（0.0）
+  vth_samples: 20 #40  # 旋转方向的速度空间采样点数
+
+# Trajectory Scoring Parameters
+  path_distance_bias: 32 #64  #30 #64    #控制器与给定路径接近程度的权重
+  goal_distance_bias: 28 #20   #20 #24  #0.6 #1.2 #20   #控制器与局部目标点的接近程度的权重，也用于速度控制
+  occdist_scale: 0.02 #0.01 #0.05 #0.1 #0.2 #0.5            # 控制器躲避障碍物的程度
+  forward_point_distance: 0.325 #以机器人为中心，额外放置一个计分点的距离
+  stop_time_buffer: 0.2         #机器人在碰撞发生前必须拥有的最少时间量。该时间内所采用的轨迹仍视为有效。即：为防止碰撞,机器人必须提前停止的时间长度
+  scaling_speed: 0.25           #开始缩放机器人足迹时的速度的绝对值，单位为m/s。
+  max_scaling_factor: 0.2       #最大缩放因子。max_scaling_factor为上式的值的大小。
+
+# Oscillation Prevention Parameters
+#  oscillation_reset_dist: 0.05  # 0.05   #机器人必须运动多少米远后才能复位震荡标记(机器人运动多远距离才会重置振荡标记)
+
+# Debugging调试参数
+  publish_traj_pc : true #将规划的轨迹在RVIZ上进行可视化
+  publish_cost_grid_pc: true   #将代价值进行可视化显示
+# Differential-drive robot configuration - necessary?
+  holonomic_robot: false
+
+  global_frame_id: odom
+  map_frame: map
+
+  controller_frequency: 5  #1.25
+  controller_max_retries: 0
+
+
+
+teb:
+  global_frame_id: odom
+  map_frame: map
+
+  controller_frequency: 5.0
+  controller_max_retries: 0
+  # Trajectory
+
+  teb_autosize: True
+  dt_ref: 0.4    # Time resolution of trajectory
+  dt_hysteresis: 0.1   # Usually approx 10% of dt_ref is recommended
+  global_plan_overwrite_orientation: True
+  max_global_plan_lookahead_dist: 3.0
+  feasibility_check_no_poses: 5
+
+  # Robot
+
+  max_vel_x: 0.2
+  max_vel_x_backwards: 0.15
+  max_vel_y: 0.0
+  max_vel_theta: 0.3
+  acc_lim_x: 0.2
+  acc_lim_theta: 0.2
+  min_turning_radius: 0.0
+  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
+    radius: 0.2 # for type "circular"
+
+  # GoalTolerance
+
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.1
+  free_goal_vel: False
+
+  # Obstacles
+
+  min_obstacle_dist: 0.2
+  include_costmap_obstacles: True
+  costmap_obstacles_behind_robot_dist: 1.0
+  obstacle_poses_affected: 30
+  costmap_converter_plugin: ""
+  costmap_converter_spin_thread: True
+  costmap_converter_rate: 5
+
+  # Optimization
+
+  no_inner_iterations: 5
+  no_outer_iterations: 4
+  optimization_activate: True
+  optimization_verbose: False
+  penalty_epsilon: 0.1
+  weight_max_vel_x: 2
+  weight_max_vel_theta: 1
+  weight_acc_lim_x: 1
+  weight_acc_lim_theta: 1
+  weight_kinematics_nh: 1000
+  weight_kinematics_forward_drive: 1
+  weight_kinematics_turning_radius: 1
+  weight_optimaltime: 1
+  weight_obstacle: 300
+  weight_dynamic_obstacle: 10 # not in use yet
+  # lection_alternative_time_cost: False
+  alternative_time_cost: False # not in use yet
+  weight_adapt_factor: 2
+
+  # Homotopy Class Planner
+
+  enable_homotopy_class_planning: False
+  enable_multithreading: True
+  simple_exploration: False
+  max_number_classes: 4
+  selection_cost_hysteresis: 1.0
+  selection_obst_cost_scale: 1.0
+  selection_alternative_time_cost: False
+
+  roadmap_graph_no_samples: 15
+  roadmap_graph_area_width: 5
+  h_signature_prescaler: 0.5
+  h_signature_threshold: 0.1
+  obstacle_keypoint_offset: 0.1
+  obstacle_heading_threshold: 0.45
+  visualize_hc_graph: False

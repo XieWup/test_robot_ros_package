@@ -1,0 +1,45 @@
+TrajectoryPlannerROS:
+
+  acc_lim_x: 1.0  #2.5 #0.6 #0.8 #1.0
+  acc_lim_theta: 1.0  #3.2 #0.5
+
+  max_vel_x: 0.2  #1
+  min_vel_x: 0.1 #1
+  max_vel_theta:  1.0  #0.5 #1.0
+#  min_vel_theta:  0.0 #-1.0  #-0.5
+  min_in_place_vel_theta:  0.4
+
+  escape_vel: 0.0  #-0.1
+  holonomic_robot: false
+
+  yaw_goal_tolerance: 0.1
+  xy_goal_tolerance: 0.15
+  latch_xy_goal_tolerance:  true #false  # ( 默认值：false) 如果目标容差被锁定，如果机器人到达目标 xy 位置，它将简单地旋转到位，即使它在这样做时最终超出了目标容差
+
+  sim_time:  1.0 #1.7  #规划时需要考虑未来多长时间，结合dwa
+  sim_granularity: 0.025
+  angular_sim_granularity: 0.025
+  vx_samples: 10 #20
+  vy_samples: 0 # 差速轮机器人无Y方向速度，取0
+  vtheta_samples: 20 #60
+#controller_frequency: 10
+
+  meter_scoring: true
+  path_distance_bias: 32 #0.8 #2.5  #2.95 #0.8
+  goal_distance_bias: 20 #0.6 #0.6 #2.5 #0.6
+  occdist_scale: 0.05 #0.3 #0.2 # default 0.01   定义控制器躲避障碍物的程度
+  heading_lookahead: 0.325          #对不同的原地旋转轨迹进行评分时，以米为单位向前看多远
+  heading_scoring: false      #是否根据机器人朝向路径的方向或与路径的距离进行评分
+  heading_scoring_timestep: 0.8
+  dwa: true #false
+  publish_cost_grid_pc: false
+  
+  oscillation_reset_dist: 0.05
+  
+  prune_plan: true
+  global_frame_id: odom
+  
+  
+
+
+

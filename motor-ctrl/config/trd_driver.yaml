@@ -1,0 +1,6 @@
+serialprot: /dev/ttyS1
+baudrate: 115200
+linear_coef : 1000
+angular_coef: 1000
+maxspeed_v: 1000
+maxspeed_a: 1000

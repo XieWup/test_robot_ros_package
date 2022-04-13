@@ -1,0 +1,19 @@
+<launch>
+  <rosparam>
+      /camera/tracking_module/frames_queue_size: 16
+  </rosparam>
+    <!--=========== launch  t265/odom ====================-->
+	<include file="/home/hanning/robot_ws/src/realsense-ros/realsense2_camera/launch/rs_t265.launch" />
+    	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/generate_odom.launch" />
+
+    <!--=========== launch  motor ======================-->
+	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/trd_driver.launch" />
+
+	<!--=========== launch  joy  ========================-->
+	<!--<include file="/home/hanning/robot_ws/src/hanning_joy/launch/joy.launch" />-->
+
+	<!--========== Run the velocity =======================-->
+    <include file="/home/hanning/robot_ws/src/twist_mux/launch/velocity.launch" />
+    <!--=========== Run the SICK_lidar ====================-->
+    <include file= "/home/hanning/robot_ws/src/sick_safetyscanners/launch/sick_safetyscanners.launch" /> 
+</launch>

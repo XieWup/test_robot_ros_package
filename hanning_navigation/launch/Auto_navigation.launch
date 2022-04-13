@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+
+
+   <!-- 启动map_server -->
+   
+  <!--<node name="map_server" pkg="map_server" type="map_server"
+      args="/home/hanning/robot_ws/src/motor-ctrl/mymaps/office004.yaml" />  -->
+
+    <arg name="laboratory_map1" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap7.yaml" />
+    <arg name="laboratory_map2" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap8.yaml" />
+  <node name="multi_map_server" pkg="multi_map_server" type="multi_map_server" args="$(arg laboratory_map1) $(arg laboratory_map2)" output="screen" />
+    
+     <!-- pbstream的地址与名称 -->
+  <!--<arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/office_map1.pbstream"/>-->
+
+
+  <!-- 启动cartographer -->
+  <!--<node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find cartographer_ros)/configuration_files
+          -configuration_basename sick_lidar_localization.lua
+          -load_state_filename $(arg load_state_filename)"
+      output="screen">
+ 
+    <remap from="scan" to="scan" />
+    <remap from="odom" to="odom" />-->
+    <!--<remap from="imu" to="/t265/imu" />-->
+ 
+
+  <!--</node>-->
+  <!-- 生成ros格式的地图 -->
+ <!--<node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.03 -pure_localization 1"/>-->
+  
+
+    <!--================================= Run the move_base ================================-->
+     <include file= "$(find motor-ctrl)/launch/move_base_path.launch"/>
+     <!--<include file= "$(find motor-ctrl)/launch/move_base_mbf.launch"/>-->
+    <!--<include file= "$(find motor-ctrl)/launch/move_base_flex.launch"/>-->
+    <!--<include file= "$(find path_tracking_pid)/launch/path_tracking_pid_mbf.launch"/>-->
+
+    
+    <!--================================= Run AMCL ================================-->
+   <!-- <include file= "$(find amcl)/examples/amcl_diff_t265.launch" />-->
+   
+
+</launch>

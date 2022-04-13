@@ -1,0 +1,61 @@
+base_global_planner: "global_planner/GlobalPlanner"            # 指定用于move_base的全局规划器插件名称
+base_local_planner: "dwa_local_planner/DWAPlannerROS"    # 指定用于move_base的局部规划器名称
+#base_local_planner: "teb_local_planner/TebLocalPlannerROS" #指定用于move_base的局部规划器插件名称.
+#base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+
+shutdown_costmap: false        # default false  当move_base在不活动状态时,是否关掉costmap
+
+controller_frequency:  10 #4  #5 #2.5 #10     # default 20.0   向底盘控制移动话题cmd_vel发送命令的频率
+controller_patience: 3.0 #5.0        # default 15.0   在空间清理操作执行前,控制器花多长时间等有效控制指令下发
+
+planner_frequency:  5 #1.0 #0.1      # default 0.0    全局规划操作的执行频率(Hz)。如果频率设置为0.0，则仅当收到新目标或局部规划器报告其路径堵塞时，才会重新执行规划操作。
+planner_patience: 3.0 #5.0           # default 5.0    在空间清理操作执行前,留给规划器多长时间(s)来找出一条有效规划
+
+conservative_reset_dist: 3  #0.5    # default 3.0    尝试清除地图中的空间时，距离机器人几米远的障碍将会从代价地图清除。注意，仅当默认恢复行为用于move_base时，才使用此参数。
+
+oscillation_timeout: 5 #10.0       # default 0.0    执行恢复行为之前允许振荡的秒数
+oscillation_distance: 0.2 #0.02       # default 0.5    机器人必须移动多米才能被视为没有振动
+
+max_planning_retries: 1  
+
+recovery_behavior_enabled: true  
+clearing_rotation_allowed: true  
+
+#recovery_behaviors:  
+ # - name: 'conservative_reset'  
+   # type: 'clear_costmap_recovery/ClearCostmapRecovery'  
+  #- name: 'aggressive_reset'
+  #  type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  #- name: 'super_reset'
+  #  type: 'clear_costmap_recovery/ClearCostmapRecovery'
+ # - name: 'clearing_rotation'  
+   # type: 'rotate_recovery/RotateRecovery'  
+  #- name: 'move_slow_and_clear'
+    #type: 'move_slow_and_clear/MoveSlowAndClear'
+    
+#保守清除，用户指定区域之外的障碍物将从机器人地图中清除
+#conservative_reset:  
+ # reset_distance: 1.0  
+  #layer_names: [static_layer, obstacle_layer, inflation_layer]
+ # layer_names: [obstacle_layer, sonar_layer]  
+#保守清除后，如果周围障碍物允许，机器人将进行原地旋转以清理空间
+
+#保守清除失败，积极清除，清除指定区域之外的所有障碍物，然后进行旋转
+#aggressive_reset:  
+ # reset_distance: 3.0  
+  #layer_names: [static_layer, obstacle_layer, inflation_layer]
+  #layer_names: [obstacle_layer, sonar_layer]
+#积极清除也失败后，放弃规划路径
+
+#可能是更进一步的清除，wiki未找到相关资料
+#super_reset:  
+ # reset_distance: 5.0  
+  #layer_names: [static_layer, obstacle_layer, inflation_layer]
+ # layer_names: [obstacle_layer, sonar_layer]
+
+#另一种恢复行为，需要注意该行为只能与具有动态设置速度限制功能的局部路径规划器适配，例如dwa
+#move_slow_and_clear:  
+ # clearing_distance: 0.5  #与小车距离0.5内的障碍物会被清楚
+ # limited_trans_speed: 0.1  
+  #limited_rot_speed: 0.4  
+ # limited_distance: 0.3  

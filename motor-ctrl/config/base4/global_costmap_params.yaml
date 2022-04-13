@@ -1,0 +1,32 @@
+global_costmap:
+  global_frame: map
+#  robot_radius: 0.23
+#footprint: [[-0.42,-0.32],[-0.42,0.32],[0.42,0.32],[0.42,-0.32]]
+#  #map_type: costmap
+  robot_base_frame: base_link
+
+  update_frequency:  1.0
+
+  publish_frequency: 1.0
+
+  transform_tolerance: 0.5
+  
+  static_map: true
+  rolling_window: false
+  resolution: 0.03
+  
+
+  plugins:
+#  # - {name: static , type: "costmap_2d : : StaticLayer"}
+#   #- {name: sensor_obstacle, type: "costmap_2d : : ObstacleLayer"}
+   - {name: static_layer,    type: "costmap_2d::StaticLayer"}
+#   - {name: camera_layer,            type: "costmap_2d::VoxelLayer"}
+   - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}
+#   #- {name: realsense_layer, type: "costmap_2d::VoxelLayer"}
+   - {name: global_inflation_layer, type: "costmap_2d::InflationLayer"}
+#   #- {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+
+#  #static:
+#   #map_topic: map
+   

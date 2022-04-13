@@ -1,0 +1,12 @@
+<launch>
+    <arg name="joy_dev"  default="/dev/input/js0" />
+    
+    <node pkg="joy"  type="joy_node"  name="joy_node" output="screen">
+        <param name="dev"  value="$(arg joy_dev)" />
+        <param name="deadzone"  value="0.5" />
+        <!--<param name="autorepeat_rate"  value="20" />-->
+    </node>
+
+    <node pkg="hanning_joy"  type="joy3600.py"  name="joy"  output="screen" />
+
+</launch>

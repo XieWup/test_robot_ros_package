@@ -1,0 +1,17 @@
+/*/*
+
+!/follow_waypoints/src/
+
+!/hanning_joy/launch/
+!/hanning_joy/scripts/
+
+!/hanning_navigation/launch/
+
+!/jetson_gpio/scripts/
+
+!/motor-ctrl/config/
+
+!/robot_start/launch/
+
+!/sick_safetyscanners/launch/
+

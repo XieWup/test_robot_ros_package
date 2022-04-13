@@ -1,0 +1,26 @@
+local_costmap:
+   # http://wiki.ros.org/costmap_2d/hydro/obstacles
+   footprint_padding: 0.1
+   transform_tolerance: 1.0
+   global_frame: odom
+   robot_base_frame: base_link
+   static_map: false
+   update_frequency: 5.0
+   publish_frequency: 5.0
+   width: 4.0
+   height: 4.0
+   resolution: 0.5 # This resolution should be bigger than the spatial resolution of velodyne. Otherwise incorrect costmap clearing occurs
+   rolling_window: true
+
+   obstacles:
+      observation_sources: laser_scan_sensor
+      laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: /scan, marking: true, clearing: true}
+         
+
+  inflation:
+    cost_scaling_factor: 2.58 
+    inflation_radius:  1.75
+global_costmap:
+   plugins:
+      -  name: empty_layer
+         type: "costmap_2d::InflationLayer"

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap7.pbstream"/>
+
+
+  <!-- 启动cartographer -->
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find cartographer_ros)/configuration_files
+          -configuration_basename sick_lidar_localization.lua
+          -load_state_filename $(arg load_state_filename)"
+      output="screen">
+ 
+    <remap from="scan" to="scan" />
+    <remap from="odom" to="odom" />
+    <!--<remap from="imu" to="/t265/imu" />-->
+ 
+
+  </node>
+  <!-- 生成ros格式的地图 -->
+ <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.03 -pure_localization 1"/>
+</launch>

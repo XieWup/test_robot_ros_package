@@ -1,0 +1,15 @@
+obstacle_range: 2.0
+raytrace_range: 2.0
+#footprint: [[0.0, -0.325],[0.0, 0.325],[0.55, 0.325],[0.55, -0.325]]
+#footprint: [[0.0, -0.325],[0.0, 0.325],[0.55, 0.325],[0.55, -0.325]]
+footprint: [[-0.4, -0.29],[-0.4, 0.29],[0.4, 0.29],[0.4, -0.29]]
+#footprint: [[-0.6, -0.26],[-0.6, 0.26],[0.16, 0.26],[0.16, -0.26]]
+
+#laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: topic_name, marking: true, clearing: true}
+
+#point_cloud_sensor: {sensor_frame: particlecloud, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}
+
+
+
+
+

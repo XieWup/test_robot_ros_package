@@ -1,0 +1,45 @@
+
+TrajectoryPlannerROS:
+  max_vel_x: 0.5
+  min_vel_x: 0.1
+  max_vel_y: 0.0
+  min_vel_y: 0.0
+  escape_vel: -0.1
+
+  acc_lim_x: 2.5
+  acc_lim_theta: 3.2 #1.0     #2.5
+  max_vel_theta:  0.5      #1.2
+  min_vel_theta: -1      #-1.2
+  min_in_place_vel_theta: 0.2
+
+#  xy_goal_tolerance: 0.02 #0.2
+#  yaw_goal_tolerance: 0.05 #0.05  #0.2
+  latch_xy_goal_tolerance: false 
+  occdist_scale: 0.01
+
+  pdist_scale: 0.8
+  gdist_scale: 0.6
+
+#  oscillation_reset_dist: 0.05     #在重置振荡标志之前机器人必须以米为单位移动多远
+
+  vx_samples: 10
+  vtheta_samples: 20
+  sim_time: 1.0
+
+  sim_granularity: 0.025 #0.08
+#  controller_frequency: 10
+  
+
+  path_distance_bias: 32
+  goal_distance_bias: 20
+
+  meter_scoring: true
+  dwa: true
+
+  recovery_behavior_enabled: false
+  clearing_rotation_allowed: false
+
+  holonomic_robot: false
+
+
+
