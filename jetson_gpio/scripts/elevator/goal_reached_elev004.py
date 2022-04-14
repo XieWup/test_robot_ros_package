@@ -11,6 +11,7 @@ from std_msgs.msg import Int64
 import os
 import sys
 import time
+import threading
 
 class Goal_reached :
 
@@ -18,12 +19,12 @@ class Goal_reached :
         rospy.init_node('goal_reached_elev', anonymous=True)
         self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
         self.move_base.wait_for_server(rospy.Duration(60))  
-        rospy.loginfo("Connected to move base server")  
+        rospy.loginfo("goal_reached_elev004 start")  
         
         self.call_elevator_sub = rospy.Subscriber('/number_floors',Int64,self.elev_callback1) #订阅要去往几楼
         self.out_elevator_sub = rospy.Subscriber('/special_points',Int64,self.elev_callback4)   
         self.arrived_elev_pub = rospy.Publisher('/arrived_elev',Int64,queue_size=10)   #特征点发布的话题 内容为 date:1  date:2 date:3
-        self.arrived_elev_sub = rospy.Subscriber('/arrived_elev',Int64, self.elev_callback2)
+        #self.arrived_elev_sub = rospy.Subscriber('/arrived_elev',Int64, self.elev_callback2)
         self.current_pose_sub= rospy.Subscriber("/tracked_pose", PoseStamped,self.current_callback)
         self.result_sub = rospy.Subscriber('/move_base/result', MoveBaseActionResult, self.result_callback)
         self.goal_sub = rospy.Subscriber('/move_base/goal', MoveBaseActionGoal, self.goal_callback3)
@@ -31,6 +32,8 @@ class Goal_reached :
         self.pub_finish_ele = rospy.Publisher('/finish_ele',Int64,queue_size=10)   #电梯通讯完成后
 
         #self.pub_to_RawSim = 
+
+        self.pub_cmd_vel = rospy.Publisher('/cmd_vel',Twist,queue_size=100)  #电梯通讯完成后切换地图
 
         self.test_switch_map = rospy.Publisher('/switch_map',Int64,queue_size=10)  #电梯通讯完成后切换地图
 
@@ -92,104 +95,150 @@ class Goal_reached :
         self.elepoint5.pose.position.y = -0.001107166742904779
         self.elepoint5.pose.orientation.z = -0.9999541520667858
         self.elepoint5.pose.orientation.w = 0.00957568610571898
+
+        self.rotation = Twist()
+        self.rotation.angular.z = 0.5
    
         #self.goal_lists=[self.in_ele_point, self.out_ele_point]
         
         
     def elev_callback1(self,pose0):  #逻辑：当订阅number_floors话题消息不为空时，将呼叫电梯点通过move_base服务器传递给move_base
-
         #if pose0 != NullHandler:
             #self.__number_status = True
+        self.call_elev =0
         self.numfloor = int(str(pose0)[-1:])
         if self.numfloor == 2 or self.numfloor == 3:
             print("发送地图1的电梯点1")
-            self.pub_simple_goal.publish(self.elepoint1)
+            self.goal = self.elepoint1
+            self.pub_simple_goal.publish(self.goal)
         else :
             print("发送地图2的电梯点1")
-            self.pub_simple_goal.publish(self.elepoint4)
-            #X = self.elepoint2.pose.position.x
-            #Y = self.elepoint2.pose.position.y
+            self.goal = self.elepoint4
+            self.pub_simple_goal.publish(self.goal)
+        X = self.goal.pose.position.x
+        Y = self.goal.pose.position.y
+        print(str(X)+str(Y))
         print("电梯点1发送完毕")
-        while self.call_elev != 1:   #此处进入与电梯的交互状态
+        while self.call_elev != 1 :
             print("等待机器人走向电梯点1: " + str(self.call_elev))
             time.sleep(1)
                 #self.move_base.send_goal( self.goal_lists[1])  #发送呼叫电梯点
-                #if X-0.2 < self.current_pose_x <= X +0.2  and  Y-0.2 < self.current_pose_y <= Y+0.2:
+                #if self.elevator_X-0.2 < self.current_pose_x <= self.elevator_X +0.2  and  self.elevator_Y-0.2 < self.current_pose_y <= self.elevator_X+0.2:
                     #print("已进入IF内部")
                 #if self.call_elev ==1: #当机器人当前位置在目标位置范围内 AND status=3 发布到达点位状态信息
             #print(self.arrived_pose)
         print("arrived P1")
         self.call_elev =0
             #self.data1=Int64()
-        self.data1.data=1
-        self.arrived_elev_pub.publish(self.data1)
+        #self.data1.data=1
+        #self.arrived_elev_pub.publish(self.data1)
+        t1 = threading.Thread(target=self.thread_spin)  # 末端位置订阅线程
+        t1.start()
+        self.elev_callback2()
+        #在elev_callback2结束后，即地图切换完成后在打开一个新的goal_reached_elev004.py程序
+        #但遗留了一个BUG：当前的.py程序并没有被停止
+        os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts && ./goal_reached_elev004.sh')
             #self.call_elev =0
             #self.arrived_pose=0
             #self.__number_status = False
 
              
-    def elev_callback2(self,msg1):
+    def elev_callback2(self):
+        self.call_elev =0
         #self.__number_status = True
         print("进入elev_callback2")
-        print(msg1)
-        if str(msg1) == "data: 1":
+        #print(msg1)
+        #if str(msg1) == "data: 1":
             #print(self.special_status)
-            while self.special_status != 2:
-                print("等待电梯门打开: " + str(self.special_status))
-                time.sleep(1)
+        while self.special_status != 2:
+            print("等待电梯门打开: " + str(self.special_status))
+            time.sleep(1)
                 #if self.special_status ==2:
-            if self.numfloor == 2 or self.numfloor == 3:
-                self.pub_simple_goal.publish(self.elepoint2)
-            else :
-                self.pub_simple_goal.publish(self.elepoint3)
-            print("电梯点2发送完毕")
+        if self.numfloor == 2 or self.numfloor == 3:
+            self.goal = self.elepoint2
+            self.pub_simple_goal.publish(self.goal)
+        else :
+            self.goal = self.elepoint3
+            self.pub_simple_goal.publish(self.goal)
+        X = self.goal.pose.position.x
+        Y = self.goal.pose.position.y
+        print(str(X)+str(Y))
+        print("电梯点2发送完毕")
                 #self.move_base.send_goal( self.goal_lists[0])
 
                     #if self.elevator_X-0.2 < self.current_pose_x <=self.elevator_X +0.2  and  self.elevator_Y-0.2 < self.current_pose_y <= self.elevator_Y+0.2 :
-            while self.call_elev != 1:
-                print("等待机器人走入电梯内...")
-                time.sleep(1)
+        while self.call_elev != 1 :
+            print("等待机器人走入电梯内...")
+            time.sleep(1)
             #print(self.arrived_pose)
-            print("arrived P2")
-            self.call_elev =0
-            if self.numfloor == 2 or self.numfloor == 3:
-                self.test_switch_map.publish(self.numfloor)
+        print("arrived P2")
+        self.call_elev =0
+        if self.numfloor == 2 or self.numfloor == 3:
+            self.test_switch_map.publish(self.numfloor)  #切换成2or3地图
             #self.data1=Int64()
-            self.data1.data=2
-            self.arrived_elev_pub.publish(self.data1)
+        #self.data1.data=2
+        #self.arrived_elev_pub.publish(self.data1)
             #self.call_elev =0
             #self.arrived_pose=0
             #self.__number_status = False
                 #else : 
                     #print("等待电梯门打开: " + str(self.special_status))
                     #time.sleep(1)
-        elif str(msg1) == "data: 2":
-            while self.special_status != 3:
-                print("等待电梯门打开: " + str(self.special_status))
-                time.sleep(1)
+        #elif str(msg1) == "data: 2":
+        while self.special_status != 3:
+            print("等待电梯门打开: " + str(self.special_status))
+            time.sleep(1)
                 #if self.special_status ==3:
-            if self.numfloor == 2 or self.numfloor == 3:
-                self.pub_simple_goal.publish(self.elepoint4)#可以试试elepoint5
-            else :
-                self.pub_simple_goal.publish(self.elepoint5)# 待上面尝试之后 ，如果可行，再加一个面朝工厂的map1的电梯外的点 
+        if self.numfloor == 2 or self.numfloor == 3:
+            self.goal = self.elepoint4
+            self.pub_simple_goal.publish(self.goal)#可以试试elepoint5
+        else :
+            self.goal = self.elepoint4
+            self.pub_simple_goal.publish(self.goal)# 待上面尝试之后 ，如果可行，再加一个面朝工厂的map1的电梯外的点 
             #self.pub_simple_goal.publish(self.elepoint1) #优化方向：将发布点位写在while循环之外
-            print("电梯点1发送完毕")
+        X = self.goal.pose.position.x
+        Y = self.goal.pose.position.y
+        print(str(X)+str(Y))
+        print("电梯点1发送完毕")
                 #self.move_base.send_goal( self.goal_lists[1])
                     #if self.elevator_X-0.2 < self.current_pose_x <=self.elevator_X +0.2  and  self.elevator_Y-0.2 < self.current_pose_y <= self.elevator_Y+0.2 :
                         #if self.call_elev ==1:
-            while self.call_elev != 1:
-                print("等待机器人走出电梯...")
-                time.sleep(1)
+        while self.call_elev != 1 :
+            print("等待机器人走出电梯...")
+            time.sleep(1)
             #print(self.arrived_pose)
-            print("arrived P3")
+        print("arrived P3")
                             #self.data1=Int64()
-            self.call_elev =0
-            self.data1.data=3
+        self.call_elev =0
+            #self.data1.data=3
             #print("self.numfloor:" + str(self.numfloor))
-            if self.numfloor == 1:
-                self.test_switch_map.publish(self.numfloor)
-            self.arrived_elev_pub.publish(self.data1)
-            self.pub_finish_ele.publish(1)
+        if self.numfloor == 1:
+            self.test_switch_map.publish(self.numfloor) #切换地图
+            time.sleep(3)
+                #旋转90度
+            for i in range(32):
+                #计量关系：
+                # 360度=2*pi弧度 即180度 = 3.1415927
+                # self.rotation.angular.z = 0.5: 0.5弧度/s
+                # time.sleep(0.1) 循环63次 = 6.3s
+                # 0.5 * 3.2 = 1.6            
+                self.pub_cmd_vel.publish(self.rotation)
+                time.sleep(0.1) #与queue_size频率相同  看起来最顺
+        elif self.numfloor == 2 or self.numfloor == 3:
+                #旋转180度
+            for i in range(64):
+                #计量关系：
+                # 360度=2*pi弧度 即180度 = 3.1415927
+                # self.rotation.angular.z = 0.5: 0.5弧度/s
+                # time.sleep(0.1) 循环63次 = 6.3s
+                # 0.5 * 6.3 = 3.15            
+                self.pub_cmd_vel.publish(self.rotation)
+                time.sleep(0.1) #与queue_size频率相同  看起来最顺
+            #self.arrived_elev_pub.publish(self.data1)    明月写的，但这里导致多次出发回调函数
+        self.pub_finish_ele.publish(1)
+        self.special_status = 0
+        #os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts && ./goal_reached_elev004.sh')
+        #else : print("")
 
             
 
@@ -212,13 +261,18 @@ class Goal_reached :
     def result_callback(self,msg):
         if msg.status.status ==3:   
             self.call_elev =1
+        print(msg.status.status)
+        print("self.call_elev = "+str(self.call_elev))
+
+    def thread_spin(self):
+        rospy.spin()
             
             
 
 if __name__ == '__main__':  
     try:  
         Goal_reached()  
-        rospy.spin()  
+        rospy.spin()
 
     except rospy.ROSInterruptException:  
         rospy.loginfo("Exploring SLAM finished.")

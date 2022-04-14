@@ -1,5 +1,6 @@
 /*/*
 
+
 !/follow_waypoints/src/
 
 !/hanning_joy/launch/
@@ -14,4 +15,8 @@
 !/robot_start/launch/
 
 !/sick_safetyscanners/launch/
+
+!/realsense-ros/realsense2_camera/launch/rs_camera1.launch
+
+!/motor-ctrl/scripts/
 
