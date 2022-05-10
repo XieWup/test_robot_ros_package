@@ -7,7 +7,7 @@
   <!--<node name="map_server" pkg="map_server" type="map_server"
       args="/home/hanning/robot_ws/src/motor-ctrl/mymaps/office004.yaml" />  -->
 
-    <arg name="laboratory_map1" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap7.yaml" />
+    <arg name="laboratory_map1" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap12.yaml" />
     <arg name="laboratory_map2" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap8.yaml" />
   <node name="multi_map_server" pkg="multi_map_server" type="multi_map_server" args="$(arg laboratory_map1) $(arg laboratory_map2)" output="screen" />
     
@@ -33,7 +33,6 @@
  <!--<node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.03 -pure_localization 1"/>-->
   
-
     <!--================================= Run the move_base ================================-->
      <include file= "$(find motor-ctrl)/launch/move_base_path.launch"/>
      <!--<include file= "$(find motor-ctrl)/launch/move_base_mbf.launch"/>-->

@@ -17,8 +17,8 @@ class Goal_reached :
 
     def __init__(self):
         rospy.init_node('goal_reached_elev', anonymous=True)
-        self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
-        self.move_base.wait_for_server(rospy.Duration(60))  
+        #self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        #self.move_base.wait_for_server(rospy.Duration(60))  
         rospy.loginfo("goal_reached_elev004 start")  
         
         self.call_elevator_sub = rospy.Subscriber('/number_floors',Int64,self.elev_callback1) #订阅要去往几楼
@@ -132,12 +132,12 @@ class Goal_reached :
             #self.data1=Int64()
         #self.data1.data=1
         #self.arrived_elev_pub.publish(self.data1)
-        t1 = threading.Thread(target=self.thread_spin)  # 末端位置订阅线程
-        t1.start()
+        #t1 = threading.Thread(target=self.thread_spin)  # 末端位置订阅线程
+        #t1.start()
         self.elev_callback2()
         #在elev_callback2结束后，即地图切换完成后在打开一个新的goal_reached_elev004.py程序
         #但遗留了一个BUG：当前的.py程序并没有被停止
-        os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts && ./goal_reached_elev004.sh')
+        os.system(cd /home/hanning/robot_ws/src/jetson_gpio/scripts && ./goal_reached_elev004.sh)
             #self.call_elev =0
             #self.arrived_pose=0
             #self.__number_status = False
@@ -261,18 +261,18 @@ class Goal_reached :
     def result_callback(self,msg):
         if msg.status.status ==3:   
             self.call_elev =1
-        print(msg.status.status)
-        print("self.call_elev = "+str(self.call_elev))
+        #print(msg.status.status)
+        #print("self.call_elev = "+str(self.call_elev))
 
-    def thread_spin(self):
-        rospy.spin()
+    #def thread_spin(self):
+        #rospy.spin()
             
             
 
 if __name__ == '__main__':  
-    try:  
-        Goal_reached()  
-        rospy.spin()
+    #try:  
+    Goal_reached()  
+    rospy.spin()
 
-    except rospy.ROSInterruptException:  
-        rospy.loginfo("Exploring SLAM finished.")
+    #except rospy.ROSInterruptException:  
+        #rospy.loginfo("Exploring SLAM finished.")

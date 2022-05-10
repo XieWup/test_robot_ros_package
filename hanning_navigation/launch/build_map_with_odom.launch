@@ -15,21 +15,28 @@
 -->
 
 <launch>
- 
-  <!-- 启动cartographer -->
+  <param name="/use_sim_time" value="false" />  <!--建图时false，运行bag包时true。时间同步-->
+  <!--这里turtlebot有模型，不用加载-->
+  <!-- 运行激光雷达的坐标系laser到机器人坐标系base_link，静态发布-->
+  <!--
+<node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link" args="0.0 0.0 0.0 0 0.0 0.0 base_footprint base_link 100"/>
+-->
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.184 0.0 0.075 0 0.0 0.0 base_link laser 100"/>
+    
+
+
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename sick_lidar.lua"
       output="screen">
-   
-    <remap from="scan" to="scan" />
-    <remap from="odom" to="odom" />
-    <!--<remap from="imu" to="/t265/imu" />-->
-    
+    <remap from="scan" to="/scan" />
+    <remap from="odom" to="/odom" />
   </node>
 
-  <!-- 生成ros格式的地图 -->
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
-      type="cartographer_occupancy_grid_node" args="-resolution 0.03" />
+      type="cartographer_occupancy_grid_node" args="-resolution 0.03 "/>
+
+      
+
 </launch>

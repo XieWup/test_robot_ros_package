@@ -145,5 +145,5 @@
     </include>
   </group>
   <!--<node pkg="tf" type="static_transform_publisher" name="base_link_to_d435_R" args="0.360 -0.150 0.20  0 0 0 /base_link /$(arg tf_prefix_camera3)_link 100"/>-->
-  <node pkg="tf" type="static_transform_publisher" name="base_link_to_d435_R" args="0.27 -0.02 0.025 0 0.17 0 /base_link /$(arg tf_prefix_camera3)_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_d435_R" args="0.247 0 0.107 0 0.618 0 /base_link /$(arg tf_prefix_camera3)_link 100"/>
 </launch>

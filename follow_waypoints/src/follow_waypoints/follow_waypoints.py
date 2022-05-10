@@ -134,6 +134,10 @@ class GetPath(State):
 	self.path_ready = True  # added on 3.31
 	#self.start_journey_bool = False  #added on 3.31
 	rospy.loginfo("I Got a Empty path_ready_msg")
+        with open(output_file_path, 'w') as file:
+            for current_pose in waypoints:
+                file.write(str(current_pose.pose.pose.position.x) + ',' + str(current_pose.pose.pose.position.y) + ',' + str(current_pose.pose.pose.position.z) + ',' + str(current_pose.pose.pose.orientation.x) + ',' + str(current_pose.pose.pose.orientation.y) + ',' + str(current_pose.pose.pose.orientation.z) + ',' + str(current_pose.pose.pose.orientation.w)+ '\n')
+        rospy.loginfo('poses written to '+ output_file_path)
 
 
     def initialize_path_queue(self):
@@ -158,8 +162,8 @@ class GetPath(State):
                 for current_pose in waypoints:
                     file.write(str(current_pose.pose.pose.position.x) + ',' + str(current_pose.pose.pose.position.y) + ',' + str(current_pose.pose.pose.position.z) + ',' + str(current_pose.pose.pose.orientation.x) + ',' + str(current_pose.pose.pose.orientation.y) + ',' + str(current_pose.pose.pose.orientation.z) + ',' + str(current_pose.pose.pose.orientation.w)+ '\n')
             rospy.loginfo('poses written to '+ output_file_path)	
-        ready_thread = threading.Thread(target=wait_for_path_ready)
-        ready_thread.start()
+        #ready_thread = threading.Thread(target=wait_for_path_ready)
+        #ready_thread.start()
 
         self.start_journey_bool = False
 

@@ -1,25 +1,19 @@
 <launch>
-	<!--=========== launch  gpio ========================-->
-	<!--<include file="$(find jetson_gpio)/launch/gpio.launch" />-->
-	<!--<include file="/home/hanning/robot_ws/src/jetson_gpio/launch/gpio.launch" />-->
-	
-	<!--=========== launch  battery ========================-->
-	<!--<include file="$(find jetson_gpio)/launch/battery.launch" />-->
-	<!--<include file="/home/hanning/robot_ws/src/jetson_gpio/launch/battery.launch" />-->
-	
+  <rosparam>
+      /camera/tracking_module/frames_queue_size: 16
+  </rosparam>
+    <!--=========== launch  t265/odom ====================
+	<include file="/home/hanning/robot_ws/src/realsense-ros/realsense2_camera/launch/rs_t265.launch" />
+    	<include file="/home/hanning/robot_ws/src/sensor_odom_manager-master/launch/sensor_odom_manager.launch" />-->
+
+    <!--=========== launch  motor ======================-->
+	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/trd_driver.launch" />
+
 	<!--=========== launch  joy  ========================-->
 	<include file="/home/hanning/robot_ws/src/hanning_joy/launch/joy.launch" />
 
-     <!--=========== launch  motor ========================-->
-	<!--<include file= "$(find motor-ctrl)/launch/trd_driver.launch"/>-->
-	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/trd_driver.launch" />
-
-    <!--=========== launch  t265/odom ========================-->
-	<include file="/home/hanning/robot_ws/src/realsense-ros-2.3.1/realsense2_camera/launch/rs_t265.launch" />
-    <include file="/home/hanning/robot_ws/src/motor-ctrl/launch/generate_odom.launch" />
-       
-    <!--================================= Run the SICK_laid ================================-->
-    <include file= "$(find sick_safetyscanners)/launch/sick_safetyscanners.launch" /> 
-	<!--================================= Run the velocity ================================-->
+	<!--========== Run the velocity =======================-->
     <include file="/home/hanning/robot_ws/src/twist_mux/launch/velocity.launch" />
+    <!--=========== Run the SICK_lidar ====================-->
+    <include file= "/home/hanning/robot_ws/src/sick_safetyscanners/launch/sick_safetyscanners.launch" /> 
 </launch>

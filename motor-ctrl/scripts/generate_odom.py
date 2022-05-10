@@ -60,7 +60,7 @@ def callback(data):
 
     r,p,yaw = Quaternion2RPY(qx, qy, qz, qw)
 
-    sensor_offset = 0.11 #0.365 #0.22323 #0.194 #0.37   #0.365 
+    sensor_offset = 0.236 #0.365 #0.22323 #0.194 #0.37   #0.365 
 
     pos_x = pos_x + sensor_offset
 
@@ -75,7 +75,7 @@ def callback(data):
     br = tf2_ros.TransformBroadcaster()
     t = geometry_msgs.msg.TransformStamped()
 
-    t.header.frame_id = "cart_odom_frame"
+    t.header.frame_id = "t265_odom"
     t.header.stamp = rospy.Time.now()
     t.child_frame_id = "base_link"
     t.transform.translation.x = xu
@@ -89,7 +89,7 @@ def callback(data):
     br.sendTransform(t)
 
     odom.header.stamp = rospy.Time.now()
-    odom.header.frame_id = "cart_odom_frame"
+    odom.header.frame_id = "t265_odom"
 
     odom.pose.pose.position.x = xu
     odom.pose.pose.position.y = yu
@@ -128,27 +128,3 @@ def listener():
 
 if __name__ == '__main__':
     listener()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

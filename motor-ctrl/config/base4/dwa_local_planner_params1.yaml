@@ -1,12 +1,12 @@
 DWAPlannerROS:
   # Robot Configuration Parameters - mengbao
-  max_vel_x: 1.75  #x方向最大线速度绝对值，单位:米/秒
+  max_vel_x: 3.5  #x方向最大线速度绝对值，单位:米/秒
   min_vel_x: -0.2 #x方向最小线速度绝对值，单位:米/秒。如果为负值表示可以后退
 
   max_vel_y: 0.0  # diff drive robot #y方向最大线速度绝对值，单位:米/秒。turtlebot为差分驱动机器人，所以为0
   min_vel_y: 0.0  # diff drive robot
 
-  max_trans_vel: 1.75 #1.0 #0.8 #机器人最大平移速度的绝对值，单位为 m/s  #max_vel_trans 下同
+  max_trans_vel: 3.5 #1.0 #0.8 #机器人最大平移速度的绝对值，单位为 m/s  #max_vel_trans 下同
   min_trans_vel: 0.1 #0.02 #0.1  #机器人最小平移速度的绝对值，单位为 m/s 
 
 #  max_vel_theta: 3.0 
@@ -19,17 +19,17 @@ DWAPlannerROS:
   #   are non-negligible and small in place rotational velocities will be created.
 
   max_rot_vel: 5.0  # choose slightly less than the base's capability  #机器人的最大旋转角速度的绝对值，单位为 rad/s
-  min_rot_vel: -0.2 #0.2  #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转
+  min_rot_vel: -0.4 #0.2  #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转
   rot_stopped_vel: 0.4 #0.01 #0.2 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s
   
-  acc_lim_x: 1.75 #1.2 #1.5 #aximum is theoretically 2.0, but we 0.5  2.0 机器人在x方向的极限加速度，单位为 meters/sec^2
-  acc_lim_theta: 5.0 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
+  acc_lim_x: 5.0 #1.2 #1.5 #aximum is theoretically 2.0, but we 0.5  2.0 机器人在x方向的极限加速度，单位为 meters/sec^2
+  acc_lim_theta: 6.0 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
   acc_lim_y: 0.0     # diff drive robot 机器人在y方向的极限加速度，对于差分机器人来说当然是0
  
 # Goal Tolerance Parameters
   yaw_goal_tolerance: 0.2 #0.1  # 0.05 到达目标点时，控制器在偏航/旋转时的弧度容差(tolerance)允许机器人缩到目标的方向（弧度）偏差，该值设置小可能导致机器人接近目标振荡。默认为0.1。
   xy_goal_tolerance: 0.2  # 0.10 到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差，该值过小可能导致机器人在目标位置附近不断调整到精确的目标位置。默认为0.1。
-  latch_xy_goal_tolerance: true  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
+#  latch_xy_goal_tolerance: true  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
 
 # Forward Simulation Parameters
   sim_time: 1.0       #前向模拟轨迹的时间，单位为s
@@ -38,7 +38,7 @@ DWAPlannerROS:
   vy_samples: 1       # y方向速度空间采样点数.。Tutulebot为差分驱动机器人，所以y方向永远只有1个值（0.0）
   vtheta_samples: 20  # 旋转方向的速度空间采样点数
 
-  controller_frequency: 6.0  #向底盘发布消息的频率 发布频率降低时可以提升机器人的行驶速度，但程序对于机器人的控制能力就降低了（特别体现在过弯），酌情调整
+#  controller_frequency: 20.0  #向底盘发布消息的频率 发布频率降低时可以提升机器人的行驶速度，但程序对于机器人的控制能力就降低了（特别体现在过弯），酌情调整
 
 # Trajectory Scoring Parameters
   pdist_scale: 0.8 #全局的比例0.8
@@ -67,7 +67,7 @@ DWAPlannerROS:
   publish_cost_grid_pc: true
   #将代价值进行可视化显示
   #是否发布规划器在规划路径时的代价网格.如果设置为true,那么就会在~/cost_cloud话题上发布sensor_msgs/PointCloud2类型消息
-  global_frame_id: odom  #全局参考坐标系为odom
+  global_frame_id: t265_odom  #全局参考坐标系为odom
 
 
 # Differential-drive robot configuration - necessary?
