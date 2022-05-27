@@ -32,4 +32,16 @@
   <!-- 生成ros格式的地图 -->
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.03" />
+
+  <!-- 启动手柄控制 -->
+    <arg name="joy_dev"  default="/dev/input/js0" />
+    
+    <node pkg="joy"  type="joy_node"  name="joy_node" output="screen">
+        <param name="dev"  value="$(arg joy_dev)" />
+        <param name="deadzone"  value="0.5" />
+        <!--<param name="autorepeat_rate"  value="20" />-->
+    </node>
+
+    <node pkg="hanning_joy"  type="joy3600.py"  name="joy"  output="screen" />
+
 </launch>

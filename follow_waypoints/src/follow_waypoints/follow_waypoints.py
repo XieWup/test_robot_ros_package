@@ -6,7 +6,7 @@ import actionlib
 from smach import State,StateMachine
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseArray ,PointStamped
-from std_msgs.msg import Empty
+from std_msgs.msg import Empty, Int64
 from tf import TransformListener
 import tf
 import math
@@ -100,6 +100,7 @@ def convert_PoseWithCovArray_to_PoseArray(waypoints):
 
 class GetPath(State):
     def __init__(self):
+	rospy.loginfo("Return GetPath")
         State.__init__(self, outcomes=['success'], input_keys=['waypoints'], output_keys=['waypoints'])
         # Subscribe to pose message to get new waypoints
         self.addpose_topic = rospy.get_param('~addpose_topic','/initialpose')
@@ -108,6 +109,7 @@ class GetPath(State):
         self.poseArray_publisher = rospy.Publisher(self.posearray_topic, PoseArray, queue_size=1)
 	rospy.Subscriber('/waypoint_mark', PoseWithCovarianceStamped, self.waypoint_mark_callback)
 	rospy.Subscriber('/path_ready', Empty, self.path_ready_callback)
+	self.goal_pub = rospy.Publisher('/goal_back', Int64, queue_size=10)
 
         # Start thread to listen for reset messages to clear the waypoint queue
         def wait_for_path_reset():
@@ -198,6 +200,8 @@ class GetPath(State):
         rospy.loginfo("To start following waypoints: 'rostopic pub /path_ready std_msgs/Empty -1'")
         rospy.loginfo("OR")
         rospy.loginfo("To start following saved waypoints: 'rostopic pub /start_journey std_msgs/Empty -1'")
+	#print("************************************************************************")
+	self.goal_pub.publish(1)
 
 
         # Wait for published waypoints or saved path  loaded
@@ -223,12 +227,16 @@ class PathComplete(State):
         State.__init__(self, outcomes=['success'])
 
     def execute(self, userdata):
-        #rospy.loginfo('###############################')
-        #rospy.loginfo('##### REACHED FINISH GATE #####')
-        #rospy.loginfo('###############################')
+	
+        rospy.loginfo('###############################')
+        rospy.loginfo('##### REACHED FINISH GATE #####')
+        rospy.loginfo('###############################')
 	#After the program is executed and the robot reaches the last point, restart the program
-	os.system('cd /home/hanning/robot_ws/src/follow_waypoints && ./follow_waypoints.sh')
+	#os.system('cd /home/hanning/robot_ws/src/follow_waypoints && ./follow_waypoints.sh')
+	#os.system('gnome-terminal -x bash -c "cd /home/hanning/robot_ws/src/follow_waypoints && ./follow_waypoints.sh"')
+	os.system('gnome-terminal -x bash -c "roslaunch follow_waypoints follow_waypoints.launch"')
         #return 'success'
+	
 
 def main():
     rospy.init_node('follow_waypoints')

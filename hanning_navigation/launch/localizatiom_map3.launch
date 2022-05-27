@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map1.pbstream"/>
+    <arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map3.pbstream"/>
 
 
   <!-- 启动cartographer -->
@@ -21,4 +21,5 @@
   <!-- 生成ros格式的地图 -->
  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.03 -pure_localization 1"/>
+      
 </launch>

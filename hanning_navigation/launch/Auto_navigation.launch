@@ -7,9 +7,10 @@
   <!--<node name="map_server" pkg="map_server" type="map_server"
       args="/home/hanning/robot_ws/src/motor-ctrl/mymaps/office004.yaml" />  -->
 
-    <arg name="laboratory_map1" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap12.yaml" />
-    <arg name="laboratory_map2" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap8.yaml" />
-  <node name="multi_map_server" pkg="multi_map_server" type="multi_map_server" args="$(arg laboratory_map1) $(arg laboratory_map2)" output="screen" />
+    <arg name="laboratory_map1" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map1.yaml" />
+    <arg name="laboratory_map2" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map2.yaml" />
+    <arg name="laboratory_map3" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map3.yaml" /> 
+  <node name="multi_map_server" pkg="multi_map_server" type="multi_map_server" args="$(arg laboratory_map1) $(arg laboratory_map2) $(arg laboratory_map3)" output="screen" />
     
      <!-- pbstream的地址与名称 -->
   <!--<arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/office_map1.pbstream"/>-->

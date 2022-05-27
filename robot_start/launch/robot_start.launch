@@ -1,7 +1,7 @@
 <launch>
-  <rosparam>
+  <!--<rosparam>
       /camera/tracking_module/frames_queue_size: 16
-  </rosparam>
+  </rosparam>-->
     <!--=========== launch  t265/odom ====================-->
 	<include file="/home/hanning/robot_ws/src/realsense-ros/realsense2_camera/launch/rs_t265.launch" />
     	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/generate_odom.launch" />

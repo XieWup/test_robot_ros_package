@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/yilimap8.pbstream"/>
+    <arg name="load_state_filename" default="/home/hanning/robot_ws/src/motor-ctrl/mymaps/map2.pbstream"/>
 
 
   <!-- 启动cartographer -->

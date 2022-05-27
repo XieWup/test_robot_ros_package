@@ -5,6 +5,7 @@ import cmd
 import rospy
 import roslib
 import actionlib
+import time
 from actionlib_msgs.msg import *
 from rospy.core import NullHandler
 from std_msgs.msg import String,Int64
@@ -27,6 +28,8 @@ class ChangeMap :
         self.IO_sub = rospy.Subscriber('/IO',data, self.callback2)
         self.elevator_point_sub = rospy.Subscriber('/elevator_point', PoseStamped, self.callback4)
         self.result_sub = rospy.Subscriber('/move_base/result', MoveBaseActionResult, self.result_callback)
+        rospy.Subscriber('wait_build_signal', Int64, self.stringSubscriberCallback) 
+        rospy.Subscriber('end_build_signal', Int64, self.endSubscriberCallback) 
         self.elevator_point_pub = rospy.Publisher('/move_base_simple/goal', PoseStamped,queue_size=10)
         self.elevator_pub = rospy.Publisher("/map_id", Int64, queue_size=10)
         self.map_id_pub=rospy.Publisher("/map_reload", String, queue_size=10)
@@ -52,6 +55,12 @@ class ChangeMap :
             #self.local_map(ID)
             #os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts/elevator  && ./map1.sh ')
 	    os.system('gnome-terminal -x bash -c "roslaunch hanning_navigation localizatiom_map1.launch"')
+
+            # add at 2022.5.11 by xie for pub map_id
+            rate = rospy.Rate(10) # 10hz
+            while not rospy.is_shutdown():
+                self.elevator_pub.publish(1)
+                rate.sleep()
             
         elif self.num[-1:] ==str(2):
             self.map_id_pub.publish(self.map_id)
@@ -63,10 +72,11 @@ class ChangeMap :
             
         elif self.num[-1:] ==str(3):
             self.map_id_pub.publish(self.map_id)
-            self.elevator_pub.publish(self.loc_map_id)
+           
             self.ID=3
-            self.local_map(ID)
-            os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts/elevator  && ./map3.sh ')
+            #self.local_map(ID)
+            #os.system('cd /home/hanning/robot_ws/src/jetson_gpio/scripts/elevator  && ./map3.sh ')
+	    os.system('gnome-terminal -x bash -c "roslaunch hanning_navigation localizatiom_map3.launch"')
 
     def callback2(self,data):
         self.elevator_pub.publish(self.ID)
@@ -82,6 +92,26 @@ class ChangeMap :
         if msgs.status.status ==3:
             self.call_elevator = 1
             #print(self.call_elevator)
+
+    def stringSubscriberCallback(self,data): 
+        rospy.loginfo('start building map...')
+        os.system('gnome-terminal -x bash -c "roslaunch hanning_navigation build_map.launch"')
+        os.system('gnome-terminal -x bash -c "rosrun rosOpenCV sub_map.py"')
+
+    def endSubscriberCallback(self,data):
+        map_id = Int64()
+        map_id = data.data
+        rospy.loginfo('end building map and save it...')
+        #save map
+        os.system('rosservice call /finish_trajectory 0 ')
+        time.sleep(3)
+        os.system('rosservice call /write_state "{filename: \'${HOME}/robot_ws/src/motor-ctrl/mymaps/map'+str(map_id)+'.pbstream\', include_unfinished_submaps: "true"}"')
+        time.sleep(3)
+        os.system('rosrun cartographer_ros cartographer_pbstream_to_ros_map -map_filestem=${HOME}/robot_ws/src/motor-ctrl/mymaps/map'+str(map_id)+' -pbstream_filename=${HOME}/robot_ws/src/motor-ctrl/mymaps/map'+str(map_id)+'.pbstream -resolution=0.03 ')
+        time.sleep(3)
+        os.system('sed -i \'1i map_id: map'+str(map_id)+'\' /home/hanning/robot_ws/src/motor-ctrl/mymaps/map'+str(map_id)+'.yaml')
+        
+
             
 if __name__ == '__main__':
         #try:  
