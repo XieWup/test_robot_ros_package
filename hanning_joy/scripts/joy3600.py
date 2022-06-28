@@ -16,8 +16,8 @@ class Joy360:
         #self.__start = False
         rospy.init_node("joy")
         rospy.Subscriber("joy",Joy,self.joy_callback)
-        self.__pub_cmd_vel = rospy.Publisher("/joy/cmd_vel",Twist,queue_size=100)
-        #self.__pub_cmd_vel = rospy.Publisher("/cmd_vel",Twist,queue_size=100)
+        #self.__pub_cmd_vel = rospy.Publisher("/joy/cmd_vel",Twist,queue_size=100)
+        self.__pub_cmd_vel = rospy.Publisher("/cmd_vel",Twist,queue_size=100)
         #rospy.spin()
         
 

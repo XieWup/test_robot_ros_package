@@ -105,6 +105,9 @@ class Goal_reached :
     def elev_callback1(self,pose0):  #逻辑：当订阅number_floors话题消息不为空时，将呼叫电梯点通过move_base服务器传递给move_base
         #if pose0 != NullHandler:
             #self.__number_status = True
+        self.pub_finish_ele.publish(1)
+        print('finish ele')
+        '''
         self.call_elev =0
         self.numfloor = int(str(pose0)[-1:])
         if self.numfloor == 2 or self.numfloor == 3:
@@ -141,7 +144,7 @@ class Goal_reached :
             #self.call_elev =0
             #self.arrived_pose=0
             #self.__number_status = False
-
+    '''
              
     def elev_callback2(self):
         self.call_elev =0

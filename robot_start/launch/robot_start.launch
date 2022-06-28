@@ -16,4 +16,8 @@
     <include file="/home/hanning/robot_ws/src/twist_mux/launch/velocity.launch" />
     <!--=========== Run the SICK_lidar ====================-->
     <include file= "/home/hanning/robot_ws/src/sick_safetyscanners/launch/sick_safetyscanners.launch" /> 
+    <!--=========== Run laser_filters ====================-->
+    <include file= "/home/hanning/robot_ws/src/laser_filters/examples/box_shadow_filter.launch" /> 
+
+
 </launch>

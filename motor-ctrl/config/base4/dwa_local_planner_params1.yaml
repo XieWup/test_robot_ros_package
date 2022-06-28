@@ -18,12 +18,12 @@ DWAPlannerROS:
   #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
   #   are non-negligible and small in place rotational velocities will be created.
 
-  max_rot_vel: 5.0  # choose slightly less than the base's capability  #机器人的最大旋转角速度的绝对值，单位为 rad/s
-  min_rot_vel: -0.4 #0.2  #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转
-  rot_stopped_vel: 0.4 #0.01 #0.2 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s
+  max_rot_vel: 3.0  # choose slightly less than the base's capability  #机器人的最大旋转角速度的绝对值，单位为 rad/s
+  min_rot_vel: -1.0 #0.2 -0.4 #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转
+  rot_stopped_vel: 0.1 #0.01 #0.2 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s
   
   acc_lim_x: 5.0 #1.2 #1.5 #aximum is theoretically 2.0, but we 0.5  2.0 机器人在x方向的极限加速度，单位为 meters/sec^2
-  acc_lim_theta: 6.0 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
+  acc_lim_theta: 2.0 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
   acc_lim_y: 0.0     # diff drive robot 机器人在y方向的极限加速度，对于差分机器人来说当然是0
  
 # Goal Tolerance Parameters

@@ -16,7 +16,7 @@ obstacle_layer:                                                      #配置障�
     expected_update_rate: 0
     combination_method: 1
     observation_sources: laser_scan_sensor  realsense_scan_sensorB   #realsense_scan_sensorA
-    laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: /scan, marking: true, clearing: true} 
+    laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: /scan_filtered, marking: true, clearing: true} 
 #    realsense_scan_sensorA: {sensor_frame: d435_L_link, data_type: LaserScan, topic: /realsense_scan1, marking: true, clearing: true,inf_is_valid: true ,observation_keep_time: 0.0}
     realsense_scan_sensorB: {sensor_frame: d435_R_link, data_type:  LaserScan, topic: /realsense_scan2, marking: true, clearing: true,inf_is_valid: true,observation_keep_time: 0.0}
  

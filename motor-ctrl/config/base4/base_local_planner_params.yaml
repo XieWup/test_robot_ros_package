@@ -14,7 +14,7 @@ TrajectoryPlannerROS:
 
   yaw_goal_tolerance: 0.1
   xy_goal_tolerance: 0.15
-  latch_xy_goal_tolerance:  true #false  # ( 默认值：false) 如果目标容差被锁定，如果机器人到达目标 xy 位置，它将简单地旋转到位，即使它在这样做时最终超出了目标容差
+  latch_xy_goal_tolerance:  false #true #  # ( 默认值：false) 如果目标容差被锁定，如果机器人到达目标 xy 位置，它将简单地旋转到位，即使它在这样做时最终超出了目标容差
 
   sim_time:  1.0 #1.7  #规划时需要考虑未来多长时间，结合dwa
   sim_granularity: 0.025

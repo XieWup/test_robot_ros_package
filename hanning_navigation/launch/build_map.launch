@@ -15,15 +15,16 @@
 -->
 
 <launch>
+  <!-- <param name="/use_sim_time" value="true" /> -->
  
   <!-- 启动cartographer -->
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename sick_lidar.lua"
+          -configuration_basename sick_lidar_1.lua"
       output="screen">
    
-    <remap from="scan" to="scan" />
+    <remap from="scan" to="scan_filtered" />
     <remap from="odom" to="odom" />
     <!--<remap from="imu" to="/t265/imu" />-->
     

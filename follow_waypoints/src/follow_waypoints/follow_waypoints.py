@@ -109,7 +109,7 @@ class GetPath(State):
         self.poseArray_publisher = rospy.Publisher(self.posearray_topic, PoseArray, queue_size=1)
 	rospy.Subscriber('/waypoint_mark', PoseWithCovarianceStamped, self.waypoint_mark_callback)
 	rospy.Subscriber('/path_ready', Empty, self.path_ready_callback)
-	self.goal_pub = rospy.Publisher('/goal_back', Int64, queue_size=10)
+	#self.goal_pub = rospy.Publisher('/goal_back', Int64, queue_size=10)
 
         # Start thread to listen for reset messages to clear the waypoint queue
         def wait_for_path_reset():
@@ -201,7 +201,7 @@ class GetPath(State):
         rospy.loginfo("OR")
         rospy.loginfo("To start following saved waypoints: 'rostopic pub /start_journey std_msgs/Empty -1'")
 	#print("************************************************************************")
-	self.goal_pub.publish(1)
+	##self.goal_pub.publish(1)
 
 
         # Wait for published waypoints or saved path  loaded
@@ -225,6 +225,7 @@ class GetPath(State):
 class PathComplete(State):
     def __init__(self):
         State.__init__(self, outcomes=['success'])
+        self.goal_pub = rospy.Publisher('/goal_back', Int64, queue_size=10)
 
     def execute(self, userdata):
 	
@@ -234,8 +235,9 @@ class PathComplete(State):
 	#After the program is executed and the robot reaches the last point, restart the program
 	#os.system('cd /home/hanning/robot_ws/src/follow_waypoints && ./follow_waypoints.sh')
 	#os.system('gnome-terminal -x bash -c "cd /home/hanning/robot_ws/src/follow_waypoints && ./follow_waypoints.sh"')
-	os.system('gnome-terminal -x bash -c "roslaunch follow_waypoints follow_waypoints.launch"')
-        #return 'success'
+	#os.system('gnome-terminal -x bash -c "roslaunch follow_waypoints follow_waypoints.launch"')
+        self.goal_pub.publish(1)
+        return 'success'
 	
 
 def main():
