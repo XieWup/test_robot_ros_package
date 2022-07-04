@@ -25,7 +25,7 @@
       output="screen">
    
     <remap from="scan" to="scan_filtered" />
-    <remap from="odom" to="odom" />
+    <remap from="odom" to="t265_odom" />
     <!--<remap from="imu" to="/t265/imu" />-->
     
   </node>

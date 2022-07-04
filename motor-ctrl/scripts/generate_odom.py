@@ -60,7 +60,7 @@ def callback(data):
 
     r,p,yaw = Quaternion2RPY(qx, qy, qz, qw)
 
-    sensor_offset = 0.236 #0.365 #0.22323 #0.194 #0.37   #0.365 
+    sensor_offset = 0.445 #y0.445 m0.236 
 
     pos_x = pos_x + sensor_offset
 

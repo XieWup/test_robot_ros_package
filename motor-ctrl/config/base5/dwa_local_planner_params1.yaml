@@ -27,9 +27,9 @@ DWAPlannerROS:
   acc_lim_y: 0.0     # diff drive robot 机器人在y方向的极限加速度，对于差分机器人来说当然是0
  
 # Goal Tolerance Parameters
-  yaw_goal_tolerance: 0.2 #0.1  # 0.05 到达目标点时，控制器在偏航/旋转时的弧度容差(tolerance)允许机器人缩到目标的方向（弧度）偏差，该值设置小可能导致机器人接近目标振荡。默认为0.1。
-  xy_goal_tolerance: 0.2  # 0.10 到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差，该值过小可能导致机器人在目标位置附近不断调整到精确的目标位置。默认为0.1。
-#  latch_xy_goal_tolerance: true  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
+  yaw_goal_tolerance: 0.1 #0.1  # 0.05 到达目标点时，控制器在偏航/旋转时的弧度容差(tolerance)允许机器人缩到目标的方向（弧度）偏差，该值设置小可能导致机器人接近目标振荡。默认为0.1。
+  xy_goal_tolerance: 0.1 # 0.10 到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差，该值过小可能导致机器人在目标位置附近不断调整到精确的目标位置。默认为0.1。
+#  latch_xy_goal_tolerance: false  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
 
 # Forward Simulation Parameters
   sim_time: 1.0       #前向模拟轨迹的时间，单位为s
@@ -41,10 +41,10 @@ DWAPlannerROS:
 #  controller_frequency: 20.0  #向底盘发布消息的频率 发布频率降低时可以提升机器人的行驶速度，但程序对于机器人的控制能力就降低了（特别体现在过弯），酌情调整
 
 # Trajectory Scoring Parameters
-  pdist_scale: 0.8 #全局的比例0.8
-  gdist_scale: 0.4 #全局和局部的比例0.4
+#  pdist_scale: 0.8 #全局的比例0.8
+#  gdist_scale: 0.4 #全局和局部的比例0.4
 
-  path_distance_bias: 32.0      # 32.0   - 控制器与给定路径接近程度的权重
+  path_distance_bias: 64.0      # 32.0   - 控制器与给定路径接近程度的权重
   goal_distance_bias: 24.0      # 24.0   - 控制器与局部目标点的接近程度的权重，也用于速度控制
   occdist_scale: 0.02            # 0.01   - 控制器躲避障碍物的程度
   forward_point_distance: 0.325 # 0.325  - 以机器人为中心，额外放置一个计分点的距离t

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!--================================= Run the move_base ================================-->
+     <include file= "$(find motor-ctrl)/launch/move_base_path1.launch"/>
+     <!--<include file= "$(find motor-ctrl)/launch/move_base_mbf.launch"/>-->
+    <!--<include file= "$(find motor-ctrl)/launch/move_base_flex.launch"/>-->
+    <!--<include file= "$(find path_tracking_pid)/launch/path_tracking_pid_mbf.launch"/>-->
+
+    
+    <!--================================= Run AMCL ================================
+     <include file= "$(find amcl)/examples/amcl_diff1.launch" />
+
+     <node  pkg="tf"  type="static_transform_publisher"  name="map_odom_broadcaster"  args="0  0  0  0  0  0  /map  /t265_odom  100"  />-->
+   
+
+</launch>

@@ -1,0 +1,26 @@
+local_costmap:
+#  robot_radius: 0.23
+#  footprint: [[-0.42,-0.32],[-0.42,0.32],[0.42,0.32],[0.42,-0.32]]
+  global_frame:   map
+
+  map_type: costmap
+
+  robot_base_frame: base_link
+
+  update_frequency:  3.0
+
+  publish_frequency: 2.0
+
+  static_map: false
+
+  rolling_window: true
+
+  width: 4.0
+  height: 4.0
+  resolution: 0.03
+# inflation_radius: 0.2
+  transform_tolerance: 1.0
+
+
+ 
+ 
