@@ -5,6 +5,9 @@
         
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
         <node  name="base2laser"  pkg="tf"  type="static_transform_publisher"  args="0.174 0 0.545 0 0 0  /base_link  /laser  50"/>
+        <!--<node  name="base2laser"  pkg="tf"  type="static_transform_publisher" args="0.184 0 0.075 0 0 0 /base_link /laser 30"/>-->
+        <node name="base_link_to_d435_R" pkg="tf" type="static_transform_publisher"  args="0.237 0 0.577 0 0.618 0 /base_link /d435_R_link 100"/>
+        <!--<node name="base_link_to_d435_R" pkg="tf" type="static_transform_publisher" args="0.247 0 0.107 0 0.618 0 /base_link /d435_R_link 100"/>-->
   <!--<rosparam>
       /camera/tracking_module/frames_queue_size: 16
   </rosparam>-->
@@ -13,7 +16,7 @@
     	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/generate_odom.launch" />
 
     <!--=========== launch  motor ======================-->
-	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/trd_driver.launch" />
+	<include file="/home/hanning/robot_ws/src/motor-ctrl/launch/trd_driver_y.launch" />
 
 	<!--=========== launch  joy  ========================-->
 	<!--<include file="/home/hanning/robot_ws/src/hanning_joy/launch/joy.launch" />-->

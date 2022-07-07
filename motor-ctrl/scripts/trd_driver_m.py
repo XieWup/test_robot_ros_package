@@ -36,7 +36,7 @@ class TrdDriver():
         rospy.init_node('trd_driver_node')
         self.set_speed(speed_v, speed_a)
         #self.vel_sub = rospy.Subscriber('/smooth_cmd_vel', Twist, self.vel_callback)
-        self.vel_sub = rospy.Subscriber('/cmd_vel', Twist, self.vel_callback) #smooth_cmd_vel
+        self.vel_sub = rospy.Subscriber('/smooth_cmd_vel', Twist, self.vel_callback) #smooth_cmd_vel
         #self.vel_sub = rospy.Subscriber('battery',BatteryState,self.BatteryCallback)
         self.v2=0
         self.a2=0

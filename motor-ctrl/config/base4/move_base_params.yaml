@@ -7,7 +7,7 @@ move_base:
 #base_global_planner: "tracking_pid/TrackingPidLocalPlanner"
   shutdown_costmap: false        # default false  当move_base在不活动状态时,是否关掉costmap
 
-  controller_frequency:  10.0 #4  #5 #2.5 #10     # default 20.0   向底盘控制移动话题cmd_vel发送命令的频率
+  controller_frequency:  20.0 #4  #5 #2.5 #10     # default 20.0   向底盘控制移动话题cmd_vel发送命令的频率
   controller_patience: 5.0 #5.0        # default 15.0   在空间清理操作执行前,控制器花多长时间等有效控制指令下发 #谢：22/3/2 如下planner_patience重新规划路径需要3s，那么等待有效控制指令应该比3s长
 
   planner_frequency:  0.0 #5 #1.0 #0.1      # default 0.0    全局规划操作的执行频率(Hz)。如果频率设置为0.0，则仅当收到新目标或局部规划器报告其路径堵塞时，才会重新执行规划操作。

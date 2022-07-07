@@ -1,13 +1,13 @@
 DWAPlannerROS:
   # Robot Configuration Parameters - mengbao
-  max_vel_x: 2.0  #x方向最大线速度绝对值，单位:米/秒 #3.5
-  min_vel_x: -0.1 #x方向最小线速度绝对值，单位:米/秒。如果为负值表示可以后退
+  max_vel_x: 0.8  #x方向最大线速度绝对值，单位:米/秒 #3.5
+  min_vel_x: 0.05 #x方向最小线速度绝对值，单位:米/秒。
 
   max_vel_y: 0.0  # diff drive robot #y方向最大线速度绝对值，单位:米/秒。turtlebot为差分驱动机器人，所以为0
   min_vel_y: 0.0  # diff drive robot
 
-  max_trans_vel: 2.0 #1.0 #0.8 #机器人最大平移速度的绝对值，单位为 m/s  #max_vel_trans #3.5
-  min_trans_vel: 0.1 #0.02 #0.1  #机器人最小平移速度的绝对值，单位为 m/s 
+  max_vel_trans: 1.0 #1.0 #0.8 #机器人最大平移速度的绝对值，单位为 m/s  #max_vel_trans #3.5
+  min_vel_trans: 0.05 #0.02 #0.1  #机器人最小平移速度的绝对值，单位为 m/s 
 
 #  max_vel_theta: 3.0 
 #  min_vel_theta: 0.4 #0.01
@@ -18,26 +18,27 @@ DWAPlannerROS:
   #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
   #   are non-negligible and small in place rotational velocities will be created.
 
-  max_rot_vel: 3.0  # choose slightly less than the base's capability  #机器人的最大旋转角速度的绝对值，单位为 rad/s
-  min_rot_vel: -0.1 #0.2 -0.4 #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转
-  rot_stopped_vel: 0.1 #0.01 #0.2 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s
+  max_rot_vel: 1.5  # choose slightly less than the base's capability  #机器人的最大旋转角速度的绝对值，单位为 rad/s
+  min_rot_vel: 0.4 #0.2 -0.4 #机器人的最小旋转角速度的绝对值，单位为 rad/s 负数表示可全向旋转（验证：不需要为负也可全向旋转）
+  rot_stopped_vel: 0.4 #0.01 #0.2 #机器人被认属于“停止”状态时的旋转速度。单位为 rad/s
   
-  acc_lim_x: 3.0 #1.2 #1.5 #aximum is theoretically 2.0, but we 0.5  2.0 机器人在x方向的极限加速度，单位为 meters/sec^2 #5.0
-  acc_lim_theta: 4.5 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
+  acc_lim_x: 2.5 #1.2 #1.5 #aximum is theoretically 2.0, but we 0.5  2.0 机器人在x方向的极限加速度，单位为 meters/sec^2 #5.0
+  acc_lim_th: 5.0 #4.0 #6.0 #4.7 #2.0 #6.0 机器人的极限旋转加速度，单位为 rad/sec^2
   acc_lim_y: 0.0     # diff drive robot 机器人在y方向的极限加速度，对于差分机器人来说当然是0
  
 # Goal Tolerance Parameters
   yaw_goal_tolerance: 0.1 #0.1  # 0.05 到达目标点时，控制器在偏航/旋转时的弧度容差(tolerance)允许机器人缩到目标的方向（弧度）偏差，该值设置小可能导致机器人接近目标振荡。默认为0.1。
-  xy_goal_tolerance: 0.1 # 0.10 到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差，该值过小可能导致机器人在目标位置附近不断调整到精确的目标位置。默认为0.1。
-#  latch_xy_goal_tolerance: false  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
+  xy_goal_tolerance: 0.2 # 0.10 到目标点时，控制器在x和y方向上的容差（tolerence）（米）。即：到达目标点时,在xy平面内与目标点的距离误差，该值过小可能导致机器人在目标位置附近不断调整到精确的目标位置。默认为0.1。
+  latch_xy_goal_tolerance: false  #true #目标坐标偏差锁存，如果上锁，机器人到达过坐标后只进行简单的方向调整，即使在公差外。默认为false。
 
 # Forward Simulation Parameters
   sim_time: 1.0       #前向模拟轨迹的时间，单位为s
+  sim_granularity: 0.025
   dwa: true           #用DWA模拟未来的轨迹
   vx_samples: 10      # x方向速度空间的采样点数 10
   vy_samples: 1       # y方向速度空间采样点数.。Tutulebot为差分驱动机器人，所以y方向永远只有1个值（0.0）
-  vtheta_samples: 20  # 旋转方向的速度空间采样点数
-
+  vth_samples: 20  # 旋转方向的速度空间采样点数
+  controller_frequency: 20.0
 #  controller_frequency: 20.0  #向底盘发布消息的频率 发布频率降低时可以提升机器人的行驶速度，但程序对于机器人的控制能力就降低了（特别体现在过弯），酌情调整
 
 # Trajectory Scoring Parameters
@@ -71,6 +72,6 @@ DWAPlannerROS:
 
 
 # Differential-drive robot configuration - necessary?
-#  holonomic_robot: false  # 全方向机器人。对于两轮差速，该值为false。
+  holonomic_robot: false  # 全方向机器人。对于两轮差速，该值为false。
 
 
